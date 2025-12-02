@@ -1,6 +1,293 @@
-.container { max-width: 500px; margin: 0 auto; padding: 2rem; text-align: center; font-family: sans-serif; }
-.upload-box { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
-input { padding: 1rem; border: 1px dashed #ccc; }
-button { padding: 10px; background: #646cff; color: white; border: none; cursor: pointer; }
-button:disabled { background: #ccc; }
-.download-btn { display: inline-block; margin-top: 1rem; padding: 10px 20px; background: #4CAF50; color: white; text-decoration: none; font-weight: bold; }
+/* 1. Google Font Import */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* 2. Reset & Base Styles */
+:root {
+  --primary-red: #e5322d;
+  --primary-hover: #cf2e29;
+  --text-dark: #2b2b35;
+  --text-grey: #666666;
+  --bg-color: #ffffff;
+  --bg-light-grey: #f8f9fa;
+  --border-color: #e0e0e0;
+  --dashed-border: #ffcccc;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* 3. Navbar (Clean & Simple) */
+.navbar {
+  background: white;
+  padding: 18px 5%;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  /* No space-between needed if we just have the logo */
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-dark);
+  letter-spacing: -0.5px;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--primary-red);
+}
+
+/* 4. Hero Section (The Converter Box) */
+.hero {
+  flex: 1; /* Pushes footer down */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 20px;
+  background-color: var(--bg-light-grey);
+}
+
+.converter-box {
+  background: white;
+  width: 100%;
+  max-width: 800px;
+  padding: 60px 40px;
+  text-align: center;
+  border-radius: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
+  /* Optional: Dashed border effect like your reference */
+  border: 2px dashed var(--dashed-border); 
+}
+
+.converter-box:hover {
+  border-color: var(--primary-red);
+  transition: border-color 0.3s ease;
+}
+
+.main-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--primary-red);
+  margin-bottom: 24px;
+}
+
+h1 {
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0 0 16px 0;
+  color: var(--text-dark);
+  letter-spacing: -1px;
+}
+
+.description {
+  font-size: 18px;
+  color: var(--text-grey);
+  margin-bottom: 40px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 5. Upload Button Area */
+.upload-container {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  max-width: 360px;
+}
+
+.btn-upload {
+  background-color: var(--primary-red);
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 22px 40px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 20px rgba(229, 50, 45, 0.2);
+}
+
+.btn-upload:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(229, 50, 45, 0.3);
+}
+
+.btn-upload:active {
+  transform: translateY(0);
+}
+
+.btn-upload:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.hidden-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* 6. Success State */
+.success-area {
+  margin-top: 40px;
+  animation: slideUp 0.4s ease-out;
+  padding: 30px;
+  background: #f0fff4;
+  border: 1px solid #c6f6d5;
+  border-radius: 12px;
+}
+
+.success-title {
+  color: #276749;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.btn-download {
+  background-color: #38a169;
+  color: white;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background 0.2s;
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.25);
+}
+
+.btn-download:hover { 
+  background-color: #2f855a; 
+  transform: translateY(-1px);
+}
+
+.btn-reset {
+  background: none;
+  border: none;
+  color: var(--text-grey);
+  text-decoration: underline;
+  margin-top: 20px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+/* 7. Footer Steps */
+.steps-section {
+  background-color: white;
+  padding: 80px 20px;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+}
+
+.steps-section h2 { 
+  font-size: 28px; 
+  margin-bottom: 60px; 
+  font-weight: 700;
+}
+
+.steps-grid {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.step { 
+  max-width: 260px; 
+  text-align: center;
+}
+
+.step-number {
+  background-color: var(--primary-red);
+  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0 auto 24px auto;
+  box-shadow: 0 4px 10px rgba(229, 50, 45, 0.2);
+}
+
+.step h3 { 
+  font-size: 20px; 
+  margin-bottom: 12px; 
+  color: var(--text-dark);
+  font-weight: 700; 
+}
+
+.step p { 
+  font-size: 16px; 
+  color: var(--text-grey); 
+  line-height: 1.6; 
+}
+
+/* Utilities */
+.loader {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  h1 { font-size: 32px; }
+  .converter-box { padding: 40px 20px; }
+  .steps-grid { gap: 40px; }
+}
