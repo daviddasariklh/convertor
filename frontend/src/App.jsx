@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 
-// --- Icons (Clean SVGs) ---
+// --- Icons ---
 const LogoIcon = () => (
   <svg viewBox="0 0 24 24" fill="currentColor" className="brand-icon">
     <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
@@ -27,6 +27,24 @@ const DownloadIcon = () => (
   </svg>
 );
 
+const StepIcon1 = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="step-icon">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+  </svg>
+);
+
+const StepIcon2 = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="step-icon">
+    <path d="M20 6L9 17l-5-5"/>
+  </svg>
+);
+
+const StepIcon3 = () => (
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="step-icon">
+    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+  </svg>
+);
+
 function App() {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState('idle');
@@ -47,9 +65,7 @@ function App() {
     formData.append('file', file);
 
     try {
-      // LIVE Backend
       const BACKEND_URL = 'https://convertor-serm.onrender.com'; 
-      
       const response = await axios.post(`${BACKEND_URL}/convert/office-to-pdf`, formData, {
         responseType: 'blob',
       });
@@ -65,8 +81,6 @@ function App() {
 
   return (
     <div className="app">
-      
-      {/* 1. Navbar */}
       <nav className="navbar">
         <div className="brand">
           <LogoIcon />
@@ -74,61 +88,67 @@ function App() {
         </div>
       </nav>
 
-      {/* 2. Hero Section */}
       <div className="hero">
-        <div className="converter-box">
+        <div className="main-card">
           
-          <ConvertIcon />
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <ConvertIcon />
+          </div>
           
           <h1>EFN Pdf Converter</h1>
-          
           <p className="description">
             The easiest way to convert your documents to PDF format.
-            <br/>We support <strong>Microsoft Word (.docx)</strong> and <strong>PowerPoint (.pptx)</strong> files.
+            <br/>We support <strong>Word (.docx)</strong> and <strong>PowerPoint (.pptx)</strong> files.
           </p>
 
-          {/* Initial State & Upload Button */}
-          {(status === 'idle' || status === 'error') && (
-            <div className="upload-container">
-              <input 
-                type="file" 
-                className="hidden-input"
-                onChange={handleFileChange} 
-                accept=".docx,.pptx,.doc,.ppt" 
-              />
-              
-              {/* Show 'Select' or 'Selected + Convert' */}
-              {!file ? (
-                <button className="btn-upload">
-                  <UploadIcon /> Select a File
-                </button>
-              ) : (
-                <div style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
-                  <button className="btn-upload" style={{backgroundColor: '#333'}}>
-                    📄 {file.name}
-                  </button>
-                  <button 
-                    className="btn-upload"
-                    onClick={handleUpload}
-                  >
-                    Convert to PDF ➜
+          {/* --- ACTION AREA --- */}
+          <div className="action-wrapper">
+            
+            {/* 1. FILE SELECTOR (This one has the hidden input) */}
+            {status === 'idle' || status === 'error' ? (
+              <>
+                <div className="file-select-container">
+                  <input 
+                    type="file" 
+                    className="hidden-input"
+                    onChange={handleFileChange} 
+                    accept=".docx,.pptx,.doc,.ppt" 
+                  />
+                  <button className={`btn-upload ${file ? 'btn-secondary' : ''}`}>
+                    {!file ? (
+                      <>
+                        <UploadIcon /> Select Document
+                      </>
+                    ) : (
+                      <span>📄 Change File</span>
+                    )}
                   </button>
                 </div>
-              )}
-            </div>
-          )}
 
-          {/* Loading State */}
-          {status === 'uploading' && (
-             <div className="upload-container">
-                <button className="btn-upload" disabled>
-                  <div className="loader"></div> Converting...
-                </button>
-                <p style={{fontSize: '14px', color: '#888', marginTop: '15px'}}>
-                  Please wait, this may take a moment...
-                </p>
-             </div>
-          )}
+                {/* 2. CONVERT BUTTON (Completely separate now!) */}
+                {file && (
+                  <div className="convert-button-container">
+                    <div style={{marginBottom: '10px', fontWeight: '600', color: '#333'}}>
+                      Selected: {file.name}
+                    </div>
+                    <button 
+                      onClick={handleUpload} 
+                      className="btn-upload btn-start"
+                    >
+                      Convert to PDF ➜
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : null}
+
+            {/* Loading State */}
+            {status === 'uploading' && (
+               <button className="btn-upload" disabled>
+                 <div className="loader"></div> Converting...
+               </button>
+            )}
+          </div>
 
           {/* Success State */}
           {status === 'success' && (
@@ -153,28 +173,25 @@ function App() {
         </div>
       </div>
 
-      {/* 3. How-to Footer */}
       <div className="steps-section">
-        <h2>How to Convert to PDF</h2>
         <div className="steps-grid">
           <div className="step">
-            <div className="step-number">1</div>
-            <h3>Upload</h3>
-            <p>Choose a Word or PowerPoint file from your computer to upload.</p>
+            <StepIcon1 />
+            <h3>Upload your file</h3>
+            <p>Select the Word or PowerPoint document you wish to convert from your computer.</p>
           </div>
           <div className="step">
-            <div className="step-number">2</div>
-            <h3>Convert</h3>
-            <p>Our tool automatically processes your file and converts it to high-quality PDF.</p>
+            <StepIcon2 />
+            <h3>Automatic Conversion</h3>
+            <p>Our tool will automatically scan and convert your file to PDF format instantly.</p>
           </div>
           <div className="step">
-            <div className="step-number">3</div>
-            <h3>Download</h3>
-            <p>Download your new PDF file instantly to your device.</p>
+            <StepIcon3 />
+            <h3>Download PDF</h3>
+            <p>Your new PDF document will be ready to download immediately after processing.</p>
           </div>
         </div>
       </div>
-
     </div>
   );
 }

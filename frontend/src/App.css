@@ -1,16 +1,13 @@
-/* 1. Google Font Import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* 2. Reset & Base Styles */
 :root {
   --primary-red: #e5322d;
   --primary-hover: #cf2e29;
+  --secondary-dark: #333333;
   --text-dark: #2b2b35;
   --text-grey: #666666;
-  --bg-color: #ffffff;
-  --bg-light-grey: #f8f9fa;
+  --bg-color: #f8f9fa;
   --border-color: #e0e0e0;
-  --dashed-border: #ffcccc;
 }
 
 body {
@@ -20,16 +17,6 @@ body {
   background-color: var(--bg-color);
   color: var(--text-dark);
   -webkit-font-smoothing: antialiased;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-#root {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
 }
 
 .app {
@@ -38,72 +25,60 @@ body {
   min-height: 100vh;
 }
 
-/* 3. Navbar (Clean & Simple) */
+/* Navbar */
 .navbar {
   background: white;
-  padding: 18px 5%;
+  padding: 16px 40px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
-  /* No space-between needed if we just have the logo */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 22px;
+  gap: 10px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-dark);
-  letter-spacing: -0.5px;
 }
 
 .brand-icon {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   color: var(--primary-red);
 }
 
-/* 4. Hero Section (The Converter Box) */
+/* Hero */
 .hero {
-  flex: 1; /* Pushes footer down */
+  flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80px 20px;
-  background-color: var(--bg-light-grey);
+  padding: 60px 20px;
+  background-color: white;
 }
 
-.converter-box {
-  background: white;
-  width: 100%;
-  max-width: 800px;
-  padding: 60px 40px;
+.main-card {
   text-align: center;
-  border-radius: 24px;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.04);
-  /* Optional: Dashed border effect like your reference */
-  border: 2px dashed var(--dashed-border); 
-}
-
-.converter-box:hover {
-  border-color: var(--primary-red);
-  transition: border-color 0.3s ease;
+  max-width: 700px;
+  width: 100%;
 }
 
 .main-icon {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   color: var(--primary-red);
-  margin-bottom: 24px;
+  margin-bottom: 20px;
+  display: block;
 }
 
 h1 {
   font-size: 42px;
-  font-weight: 800;
+  font-weight: 700;
   margin: 0 0 16px 0;
-  color: var(--text-dark);
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 .description {
@@ -111,52 +86,23 @@ h1 {
   color: var(--text-grey);
   margin-bottom: 40px;
   line-height: 1.6;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-/* 5. Upload Button Area */
-.upload-container {
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  max-width: 360px;
-}
-
-.btn-upload {
-  background-color: var(--primary-red);
-  color: white;
-  font-size: 20px;
-  font-weight: 600;
-  padding: 22px 40px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
+/* --- BUTTONS & INPUTS (The Fix) --- */
+.action-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
+  gap: 20px;
   width: 100%;
-  transition: all 0.2s ease;
-  box-shadow: 0 8px 20px rgba(229, 50, 45, 0.2);
+  max-width: 350px;
+  margin: 0 auto;
 }
 
-.btn-upload:hover {
-  background-color: var(--primary-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(229, 50, 45, 0.3);
-}
-
-.btn-upload:active {
-  transform: translateY(0);
-}
-
-.btn-upload:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+/* Only this container has the hidden input */
+.file-select-container {
+  position: relative;
+  width: 100%;
 }
 
 .hidden-input {
@@ -167,12 +113,63 @@ h1 {
   height: 100%;
   opacity: 0;
   cursor: pointer;
+  z-index: 10; /* Ensures it sits on top of the Select button */
 }
 
-/* 6. Success State */
+.btn-upload {
+  background-color: var(--primary-red);
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 20px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(229, 50, 45, 0.25);
+}
+
+.btn-upload:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* When a file is selected, make the 'Select' button look secondary */
+.btn-secondary {
+  background-color: white;
+  color: var(--text-dark);
+  border: 2px solid #eee;
+  box-shadow: none;
+}
+.btn-secondary:hover {
+  background-color: #f8f9fa;
+  border-color: #ddd;
+}
+
+/* The separate Start Conversion button */
+.convert-button-container {
+  width: 100%;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.btn-start {
+  background-color: var(--secondary-dark); /* Dark button for convert */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.btn-start:hover {
+  background-color: black;
+}
+
+/* Success Area */
 .success-area {
   margin-top: 40px;
-  animation: slideUp 0.4s ease-out;
+  animation: fadeIn 0.4s ease-out;
   padding: 30px;
   background: #f0fff4;
   border: 1px solid #c6f6d5;
@@ -181,101 +178,64 @@ h1 {
 
 .success-title {
   color: #276749;
-  font-weight: 700;
-  font-size: 20px;
-  margin-bottom: 20px;
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 15px;
 }
 
 .btn-download {
   background-color: #38a169;
   color: white;
   text-decoration: none;
-  padding: 16px 32px;
-  border-radius: 8px;
+  padding: 12px 24px;
+  border-radius: 6px;
   font-weight: 600;
-  font-size: 18px;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   transition: background 0.2s;
-  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.25);
 }
 
-.btn-download:hover { 
-  background-color: #2f855a; 
-  transform: translateY(-1px);
-}
+.btn-download:hover { background-color: #2f855a; }
 
 .btn-reset {
   background: none;
   border: none;
   color: var(--text-grey);
   text-decoration: underline;
-  margin-top: 20px;
+  margin-top: 15px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
 }
 
-/* 7. Footer Steps */
+/* Footer */
 .steps-section {
-  background-color: white;
+  background-color: var(--bg-color);
   padding: 80px 20px;
   text-align: center;
   border-top: 1px solid var(--border-color);
 }
 
-.steps-section h2 { 
-  font-size: 28px; 
-  margin-bottom: 60px; 
-  font-weight: 700;
-}
-
 .steps-grid {
   display: flex;
   justify-content: center;
-  gap: 80px;
+  gap: 60px;
   flex-wrap: wrap;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
-.step { 
-  max-width: 260px; 
-  text-align: center;
+.step { max-width: 280px; }
+
+.step-icon {
+  color: var(--primary-red);
+  margin-bottom: 20px;
 }
 
-.step-number {
-  background-color: var(--primary-red);
-  color: white;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 20px;
-  margin: 0 auto 24px auto;
-  box-shadow: 0 4px 10px rgba(229, 50, 45, 0.2);
-}
+.step h3 { font-size: 18px; margin-bottom: 10px; color: var(--text-dark); }
+.step p { font-size: 15px; color: var(--text-grey); line-height: 1.5; }
 
-.step h3 { 
-  font-size: 20px; 
-  margin-bottom: 12px; 
-  color: var(--text-dark);
-  font-weight: 700; 
-}
-
-.step p { 
-  font-size: 16px; 
-  color: var(--text-grey); 
-  line-height: 1.6; 
-}
-
-/* Utilities */
 .loader {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border: 3px solid rgba(255,255,255,0.4);
   border-top-color: white;
   border-radius: 50%;
@@ -283,11 +243,4 @@ h1 {
 }
 
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  h1 { font-size: 32px; }
-  .converter-box { padding: 40px 20px; }
-  .steps-grid { gap: 40px; }
-}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
