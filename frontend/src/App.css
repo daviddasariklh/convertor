@@ -1,0 +1,6 @@
+.container { max-width: 500px; margin: 0 auto; padding: 2rem; text-align: center; font-family: sans-serif; }
+.upload-box { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+input { padding: 1rem; border: 1px dashed #ccc; }
+button { padding: 10px; background: #646cff; color: white; border: none; cursor: pointer; }
+button:disabled { background: #ccc; }
+.download-btn { display: inline-block; margin-top: 1rem; padding: 10px 20px; background: #4CAF50; color: white; text-decoration: none; font-weight: bold; }
